@@ -1,11 +1,17 @@
-Global Azure Bootcamp - Cincinnati, Ohio
-=
+# Global Azure Bootcamp - Cincinnati, Ohio
+
 ![alt text](http://global.azurebootcamp.net/wp-content/uploads/2014/10/2016-logo-250x169.png)
 
-# What are Azure Storage Queues?
+## What are Azure Storage Queues?
 
-# Hands on Lab
-### Create an ASP.Net MVC Web Application
+
+
+## Hands on Lab
+### Create an ASP.NET MVC Web Application
+
+`New Project` -> `ASP.NET Web Application` -> `MVC (4.5.2)` No Authentication 
+
+"Working..."
 
 ### Add Azure Webjob
 
@@ -19,7 +25,9 @@ Global Azure Bootcamp - Cincinnati, Ohio
 
 ### To the Cloud!
 
-# More Fun in Lab
+
+
+## More Fun in Lab
 ### Poison Queue
 
 ### Add to another queue
