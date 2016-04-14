@@ -2,21 +2,6 @@
 
 ![gabc]
 
-## What are Azure Storage Queues?
-
-	storage queues
-	how they can be used
-	poison queue
-	logging
-	resource groups
-	Kudu
-![kudu]
-	
- 'Always On' doesn't appear to be enabled for this Web App. To ensure your continuous job doesn't stop running when the SCM host is idle for too long, consider enabling 'Always On' in the configuration settings for your Web App. Note: 'Always On' is available only in Basic, Standard and Premium modes.
- 
- AzureWebJobsDashboard connection string vs AzureWebJobsStorage
-
-
 ## Cleanup Before Starting
 
 * Delete all Blob containers
@@ -70,7 +55,7 @@
 * Web Application -> webjobs-list.json
 	- WATCH FOR DUPLICATES!!!
 
-We are going to use a Azure Storage Queue to trigger our WebJob.
+> We are going to use a Azure Storage Queue to trigger our WebJob.
 Other options are to `Run on Schedule` or `Run on Demand`.
 Can you think of any tasks you would need to run on a schedule or demand?
 
@@ -120,11 +105,28 @@ Write a method to fire when a message is placed onto the queue, this time it wil
 using Newtonsoft.Json;
 ```
 
+#### Push a Message onto the Queue
+
+```javascript
+{
+  "Id": "001",
+  "To": "Eric.Webb@email.com",
+  "From": "Tom.Straub@email.com",
+  "Subject": "Check out Azure",
+  "Body": "Did you know...."
+}
+```
+
 ### Write the Consumer to interact with other queues
 
-### Deploy to Azure
+### Check Out the Standard Information Available
+
+### Publish to Azure
 
 ### Run this in the Cloud!
+
+### Kudu
+![webjobwarning]
 
 
 # References
@@ -133,11 +135,14 @@ https://azure.microsoft.com/en-us/documentation/articles/storage-use-emulator/#s
 
 https://azure.microsoft.com/en-us/documentation/articles/websites-dotnet-webjobs-sdk-storage-queues-how-to
 
+https://github.com/projectkudu/kudu
+
 
 [gabc]: /Images/GABC.png "Global Azure Bootcamp"
 [kudu]: /Images/kudu.png "kudu"
-[newmvc]: /Images/NewMvc.jpg "s"
-[newstorage]: /Images/NewStorage.jpg "s"
-[newstorage2]: /Images/NewStorage2.jpg "s"
-[newwebapp]: /Images/NewWebApp.jpg "s"
-[newwebjob]: /Images/NewWebJob.jpg "s"
+[newmvc]: /Images/NewMvc.jpg "step"
+[newstorage]: /Images/NewStorage.jpg "step"
+[newstorage2]: /Images/NewStorage2.jpg "step"
+[newwebapp]: /Images/NewWebApp.jpg "step"
+[newwebjob]: /Images/NewWebJob.jpg "step"
+[webjobwarning]: /Images/WebJobWarning.jpg "warning"
