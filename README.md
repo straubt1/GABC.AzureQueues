@@ -57,15 +57,60 @@
 
 > We are going to use a Azure Storage Queue to trigger our WebJob.
 Other options are to `Run on Schedule` or `Run on Demand`.
-Can you think of any tasks you would need to run on a schedule or demand?
+
+> Can you think of any tasks you would need to run on a schedule or demand?
+
+### Set the Connection String
+Open `App.config`
+
+```xml
+<connectionStrings>
+	<add name="AzureWebJobsDashboard" connectionString="Insert Connection String Here!"/>
+	<add name="AzureWebJobsStorage"   connectionString="Insert Connection String Here!"/>
+</connectionStrings>
+```
+
+> Two different connections strings, why?
 
 ### Write the First Consumer
 Write a method to fire when a message is placed onto the queue as a `string`
+```cs
+private const string QueueName = "appnotifications";
 
-Debug the webjob locally
+/// <summary>
+/// Process a queue message as a raw string
+/// </summary>
+/// <param name="message"></param>
+/// <param name="log"></param>
+public static void ProcessNotification(
+	[QueueTrigger(QueueName)] string message,
+	TextWriter log)
+{
+	//String Interpolation C# 6, tastes like candy!
+	var logMessage = $"Message Recieved as string: {message}";
 
-Push a message onto the queue
+	log.WriteLine(logMessage);
+	Console.WriteLine(logMessage);
+}
+```
+#### Create the Queue
+Open `Cloud Explorer` -> goto the Storage Account -> Right-Click `Queues` -> `Create Queue`
 
+![createqueue]
+
+#### Debug the webjob locally
+Right-Click on the WebJob project -> `Debug` -> `Start new instance`
+
+![debugwebjob]
+
+#### Push a message onto the queue
+Open `Cloud Explorer` -> goto the Storage Account -> double-click on the queue
+
+![addmessage1]:
+
+Click `Add Message`
+
+![addmessage3]:
 ### Define Queue Message
 Create the following POCO
 ```cs
@@ -101,12 +146,28 @@ public class AppNotification
 ### Write the Consumer that takes the POCO
 Write a method to fire when a message is placed onto the queue, this time it will be deserialized.
 
+> The webjob will use `Newtonsoft.Json` to deserialize from JSON
+
 ```cs
-using Newtonsoft.Json;
+/// <summary>
+/// Process a queue message as a POCO
+/// </summary>
+/// <param name="message"></param>
+/// <param name="log"></param>
+public static void ProcessNotification(
+	[QueueTrigger(QueueName)] AppNotification message,
+	TextWriter log)
+{
+	var logMessage = $"Message Recieved as POCO: {JsonConvert.SerializeObject(message)}";
+
+	log.WriteLine(logMessage);
+	Console.WriteLine(logMessage);
+}
 ```
 
 #### Push a Message onto the Queue
 
+Sample JSON
 ```javascript
 {
   "Id": "001",
@@ -116,10 +177,81 @@ using Newtonsoft.Json;
   "Body": "Did you know...."
 }
 ```
+Add a new message
+
+![addmessage2]
+
+### Check Out the Standard Information Available
+
+```cs
+/// <summary>
+/// Process queue message and get default information
+/// </summary>
+/// <param name="message"></param>
+/// <param name="expirationTime"></param>
+/// <param name="insertionTime"></param>
+/// <param name="nextVisibleTime"></param>
+/// <param name="id"></param>
+/// <param name="popReceipt"></param>
+/// <param name="dequeueCount"></param>
+/// <param name="queueTrigger"></param>
+/// <param name="cloudStorageAccount"></param>
+/// <param name="log"></param>
+public static void ProcessNotification(
+	[QueueTrigger(QueueName)] AppNotification message,
+	DateTimeOffset expirationTime,
+	DateTimeOffset insertionTime,
+	DateTimeOffset nextVisibleTime,
+	string id,
+	string popReceipt,
+	int dequeueCount,
+	string queueTrigger,
+	CloudStorageAccount cloudStorageAccount,
+	TextWriter log)
+{
+	var logMessage = $"logMessage={message}\n" +
+						$"expirationTime={expirationTime}\n" +
+						$"insertionTime={insertionTime}\n" +
+						$"nextVisibleTime={nextVisibleTime}\n" +
+						$"id={id}\n" +
+						$"popReceipt={popReceipt}\n" +
+						$"dequeueCount ={dequeueCount}\n" +
+						$"queue endpoint={cloudStorageAccount.QueueEndpoint}\n" +
+						$"queueTrigger={queueTrigger}";
+
+	log.WriteLine(logMessage);
+	Console.WriteLine(logMessage);
+}
+```
 
 ### Write the Consumer to interact with other queues
 
-### Check Out the Standard Information Available
+```cs
+/// <summary>
+/// Process a queue message and forward it to another queue
+/// </summary>
+/// <param name="message"></param>
+/// <param name="forwardQueue"></param>
+/// <param name="eventQueue"></param>
+/// <param name="log"></param>
+public static void ProcessNotification(
+	[QueueTrigger(QueueName)] AppNotification message,
+	[Queue(QueueName + "-forward")] out AppNotification forwardQueue,
+	[Queue(QueueName + "-event")] out string eventQueue,
+	TextWriter log)
+{
+	var logMessage = $"Message Recieved: {JsonConvert.SerializeObject(message)}";
+
+	log.WriteLine(logMessage);
+
+	//forward to another queue for further processing
+	forwardQueue = message;
+	forwardQueue.Status = $"Notification was processed at '{DateTime.UtcNow}'";
+
+	//write generic event as string to another queue
+	eventQueue = DateTime.Now.ToString();
+}
+```
 
 ### Publish to Azure
 
@@ -146,3 +278,8 @@ https://github.com/projectkudu/kudu
 [newwebapp]: /Images/NewWebApp.jpg "step"
 [newwebjob]: /Images/NewWebJob.jpg "step"
 [webjobwarning]: /Images/WebJobWarning.jpg "warning"
+[createqueue]: /Images/CreateQueue.jpg "create queue"
+[debugwebjob]: /Images/DebugWebjob.jpg "debug webjob"
+[addmessage1]: /Images/AddMessage.jpg "Add Messasge"
+[addmessage2]: /Images/AddMessage2.jpg "Add Messasge"
+[addmessage3]: /Images/AddMessage3.jpg "Add Messasge"

@@ -43,30 +43,18 @@ namespace NotificationListenerWebJob
         //}
 
         ///// <summary>
-        ///// Process a queue message and forward it to another queue
+        ///// Process queue message and get default information
         ///// </summary>
         ///// <param name="message"></param>
-        ///// <param name="forwardQueue"></param>
-        ///// <param name="eventQueue"></param>
+        ///// <param name="expirationTime"></param>
+        ///// <param name="insertionTime"></param>
+        ///// <param name="nextVisibleTime"></param>
+        ///// <param name="id"></param>
+        ///// <param name="popReceipt"></param>
+        ///// <param name="dequeueCount"></param>
+        ///// <param name="queueTrigger"></param>
+        ///// <param name="cloudStorageAccount"></param>
         ///// <param name="log"></param>
-        //public static void ProcessNotification(
-        //    [QueueTrigger(QueueName)] AppNotification message,
-        //    [Queue(QueueName + "-forward")] out AppNotification forwardQueue,
-        //    [Queue(QueueName + "-event")] out string eventQueue,
-        //    TextWriter log)
-        //{
-        //    var logMessage = $"Message Recieved: {JsonConvert.SerializeObject(message)}";
-
-        //    log.WriteLine(logMessage);
-
-        //    //forward to another queue for further processing
-        //    forwardQueue = message;
-        //    forwardQueue.Status = $"Notification was processed at '{DateTime.UtcNow}'";
-
-        //    //write generic event as string to another queue
-        //    eventQueue = DateTime.Now.ToString();
-        //}
-
         //public static void ProcessNotification(
         //    [QueueTrigger(QueueName)] AppNotification message,
         //    DateTimeOffset expirationTime,
@@ -91,6 +79,31 @@ namespace NotificationListenerWebJob
 
         //    log.WriteLine(logMessage);
         //    Console.WriteLine(logMessage);
+        //}
+
+        ///// <summary>
+        ///// Process a queue message and forward it to another queue
+        ///// </summary>
+        ///// <param name="message"></param>
+        ///// <param name="forwardQueue"></param>
+        ///// <param name="eventQueue"></param>
+        ///// <param name="log"></param>
+        //public static void ProcessNotification(
+        //    [QueueTrigger(QueueName)] AppNotification message,
+        //    [Queue(QueueName + "-forward")] out AppNotification forwardQueue,
+        //    [Queue(QueueName + "-event")] out string eventQueue,
+        //    TextWriter log)
+        //{
+        //    var logMessage = $"Message Recieved: {JsonConvert.SerializeObject(message)}";
+
+        //    log.WriteLine(logMessage);
+
+        //    //forward to another queue for further processing
+        //    forwardQueue = message;
+        //    forwardQueue.Status = $"Notification was processed at '{DateTime.UtcNow}'";
+
+        //    //write generic event as string to another queue
+        //    eventQueue = DateTime.Now.ToString();
         //}
     }
 }
