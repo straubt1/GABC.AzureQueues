@@ -267,6 +267,8 @@ public static void ProcessNotification(
 
 ### Run this in the Cloud!
 
+Go to https://portal.azure.com/
+
 ### Kudu
 ![webjobwarning]
 
