@@ -10,7 +10,7 @@
 
 ## Hands on Lab
 ### Create a Storage Account
-**do this first, takes some time**
+**Do this first, takes some time**
 
 1. Navigate to https://portal.azure.
 2. Click `Add`
@@ -255,11 +255,22 @@ public static void ProcessNotification(
 
 ### Publish to Azure
 
+![publish1]
+
+![publish2]
+
+![publish3]
+
+![publish4]
+
+![publish5]
+
 ### Run this in the Cloud!
 
 ### Kudu
 ![webjobwarning]
 
+Update `Web.Release.Config` in the Web App to this:
 ```xml
 <?xml version="1.0"?>
 <configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
@@ -296,3 +307,8 @@ https://github.com/projectkudu/kudu
 [addmessage1]: /Images/AddMessage.jpg "Add Messasge"
 [addmessage2]: /Images/AddMessage2.jpg "Add Messasge"
 [addmessage3]: /Images/AddMessage3.jpg "Add Messasge"
+[publish1]: /Images/Publish1.jpg "Publish"
+[publish2]: /Images/Publish2.jpg "Publish"
+[publish3]: /Images/Publish3.jpg "Publish"
+[publish4]: /Images/Publish4.jpg "Publish"
+[publish5]: /Images/Publish5.jpg "Publish"
