@@ -260,6 +260,19 @@ public static void ProcessNotification(
 ### Kudu
 ![webjobwarning]
 
+```xml
+<?xml version="1.0"?>
+<configuration xmlns:xdt="http://schemas.microsoft.com/XML-Document-Transform">
+  <connectionStrings xdt:Transform="Insert">
+    <add name="AzureWebJobsDashboard" connectionString="Insert Connection String Here!" />
+    <add name="AzureWebJobsStorage"   connectionString="Insert Connection String Here!" />
+  </connectionStrings>
+  <system.web>
+    <compilation xdt:Transform="RemoveAttributes(debug)" />
+  </system.web>
+</configuration>
+```
+
 
 # References
 
